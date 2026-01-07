@@ -32,6 +32,13 @@ export default function LoginPage() {
         // If successful redirect happens, component unmounts, so no need to set loading false really.
     }
 
+    async function handleGoogleSignIn() {
+        const result = await signInWithGoogle()
+        if (result?.error) {
+            setError(result.error)
+        }
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-black text-white">
 
@@ -108,7 +115,7 @@ export default function LoginPage() {
                 </div>
 
                 {/* Google Sign In */}
-                <form action={signInWithGoogle}>
+                <form action={handleGoogleSignIn}>
                     <button
                         type="submit"
                         className="w-full bg-white hover:bg-neutral-100 text-black font-semibold py-3 rounded-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
