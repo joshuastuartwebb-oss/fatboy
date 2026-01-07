@@ -87,15 +87,23 @@ export default async function Home() {
       throw error;
     }
 
-    // Otherwise it's a real crash (probably env vars missing)
     console.error("Home Page Crash:", error)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
-        <h1 className="text-2xl font-bold text-red-500 mb-4">Application Error</h1>
-        <p className="mb-4">Failed to initialize application.</p>
-        <p className="text-neutral-500 text-sm mb-8">This is likely due to missing environment variables in the Cloudflare runtime.</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4 font-mono">
+        <h1 className="text-xl font-bold text-red-500 mb-4">Initial Load Error</h1>
+        <div className="bg-neutral-900 p-4 rounded-lg mb-4 max-w-full overflow-auto border border-neutral-800">
+          <p className="text-sm text-neutral-300">
+            {error instanceof Error ? error.message : JSON.stringify(error)}
+          </p>
+          {error instanceof Error && error.stack && (
+            <pre className="text-[10px] text-neutral-500 mt-2 whitespace-pre-wrap">
+              {error.stack}
+            </pre>
+          )}
+        </div>
+        <p className="text-neutral-500 text-sm mb-8">Please screenshot this screen.</p>
         <a href="/debug" className="bg-white text-black px-4 py-2 rounded-lg font-bold hover:bg-neutral-200">
-          Go to Debug Page
+          Check Env Vars
         </a>
       </div>
     )
