@@ -89,10 +89,7 @@ export default async function DashboardPage() {
                 <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-3">
                         <Image src="/fatboy-logo.jpg" alt="Fatboy" width={44} height={44} className="rounded-full" />
-                        <div className="flex items-baseline gap-2">
-                            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">FATBOY</h1>
-                            <p className="text-neutral-500 uppercase tracking-widest text-[9px] sm:text-[11px] font-semibold">Habit Tracker</p>
-                        </div>
+                        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white leading-none">FATBOY</h1>
                     </div>
 
                     <form action={signout}>
@@ -110,7 +107,7 @@ export default async function DashboardPage() {
                 />
             </div>
 
-            <div className="flex-1 w-full flex items-start justify-center overflow-hidden pb-1">
+            <div className="flex-1 w-full flex items-start justify-center overflow-visible pb-1">
                 <DashboardGrid startDate={profile.start_date} logs={logs || []} />
             </div>
         </div>

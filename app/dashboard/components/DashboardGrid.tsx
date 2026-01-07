@@ -64,8 +64,8 @@ export default function DashboardGrid({ startDate, logs }: { startDate: string, 
     }
 
     return (
-        <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto px-1 sm:px-4">
-            <div className="space-y-1.5 sm:space-y-3">
+        <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto px-1 sm:px-4 pt-1 overflow-visible">
+            <div className="space-y-1.5 sm:space-y-3 overflow-visible">
                 {weeks.map((week, weekIndex) => (
                     <div key={weekIndex} className="grid grid-cols-8 gap-1 sm:gap-3">
                         {/* 7 Day Dots */}
