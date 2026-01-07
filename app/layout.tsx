@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "FATBOY",
   description: "12 Week Habit Tracker",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/icon-192.png",
+    shortcut: "/icon-192.png",
+    apple: "/icon-192.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
