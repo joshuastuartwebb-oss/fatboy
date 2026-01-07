@@ -46,5 +46,5 @@ export async function saveLog(formData: FormData) {
     }
 
     revalidatePath('/dashboard')
-    redirect('/dashboard')
+    return { success: true }
 }

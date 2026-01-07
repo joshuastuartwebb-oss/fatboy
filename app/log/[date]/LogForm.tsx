@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { saveLog } from './actions'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 
 type Props = {
     date: string
@@ -23,6 +24,8 @@ const QUESTIONS = [
 
 export default function LogForm({ date, initialData }: Props) {
     const [answers, setAnswers] = useState<Record<string, boolean>>({})
+    const [isPending, startTransition] = useTransition()
+    const router = useRouter()
 
     useEffect(() => {
         if (initialData) {
@@ -61,10 +64,16 @@ export default function LogForm({ date, initialData }: Props) {
     }
 
     const handleSubmit = async (formData: FormData) => {
-        const result = await saveLog(formData)
-        if (result?.error) {
-            alert(result.error) // Simple alert for now, could be better UI
-        }
+        startTransition(async () => {
+            const result = await saveLog(formData)
+            if (result?.error) {
+                alert(result.error)
+            } else {
+                // Fast client-side navigation
+                router.push('/dashboard')
+                router.refresh()
+            }
+        })
     }
 
     return (
@@ -133,12 +142,20 @@ export default function LogForm({ date, initialData }: Props) {
 
             <motion.button
                 type="submit"
+                disabled={isPending}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="w-full bg-white text-black font-bold py-3.5 rounded-xl text-base hover:bg-neutral-200 transition-all shadow-lg mt-6 active:scale-[0.98]"
+                className="w-full bg-white text-black font-bold py-3.5 rounded-xl text-base hover:bg-neutral-200 transition-all shadow-lg mt-6 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-                Save Log
+                {isPending ? (
+                    <>
+                        <Loader2 size={18} className="animate-spin" />
+                        Saving...
+                    </>
+                ) : (
+                    'Save Log'
+                )}
             </motion.button>
         </form>
     )

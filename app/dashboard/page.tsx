@@ -85,19 +85,19 @@ export default async function DashboardPage() {
 
     return (
         <div className="h-[100dvh] bg-black text-white p-1 flex flex-col items-center overflow-hidden">
-            <div className="w-full max-w-[320px] sm:max-w-4xl px-1 mt-1 flex-shrink-0">
-                <div className="flex justify-between items-center mb-1">
-                    <div className="flex items-center gap-2">
-                        <Image src="/fatboy-logo.jpg" alt="Fatboy" width={28} height={28} className="rounded-full" />
-                        <div className="flex items-baseline gap-1.5">
-                            <h1 className="text-lg sm:text-2xl font-black tracking-tight text-white">FATBOY</h1>
-                            <p className="text-neutral-500 uppercase tracking-widest text-[7px] sm:text-[10px] font-semibold">Habit Tracker</p>
+            <div className="w-full max-w-[320px] sm:max-w-4xl px-2 pt-4 sm:pt-2 flex-shrink-0">
+                <div className="flex justify-between items-center mb-3">
+                    <div className="flex items-center gap-3">
+                        <Image src="/fatboy-logo.jpg" alt="Fatboy" width={44} height={44} className="rounded-full" />
+                        <div className="flex items-baseline gap-2">
+                            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">FATBOY</h1>
+                            <p className="text-neutral-500 uppercase tracking-widest text-[9px] sm:text-[11px] font-semibold">Habit Tracker</p>
                         </div>
                     </div>
 
                     <form action={signout}>
-                        <button type="submit" className="p-1 text-neutral-500 hover:text-white transition-colors">
-                            <LogOut size={14} />
+                        <button type="submit" className="p-2 text-neutral-500 hover:text-white transition-colors">
+                            <LogOut size={18} />
                         </button>
                     </form>
                 </div>
