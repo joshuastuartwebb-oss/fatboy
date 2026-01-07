@@ -6,8 +6,6 @@ import { format } from 'date-fns'
 import LogForm from './LogForm'
 import { ChevronLeft } from 'lucide-react'
 
-export const runtime = 'edge'
-
 export default async function LogPage({ params }: { params: Promise<{ date: string }> }) {
     const { date } = await params
     const dateStr = date
