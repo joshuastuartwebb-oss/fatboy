@@ -60,8 +60,15 @@ export default function LogForm({ date, initialData }: Props) {
         setAnswers(prev => ({ ...prev, [id]: !prev[id] }))
     }
 
+    const handleSubmit = async (formData: FormData) => {
+        const result = await saveLog(formData)
+        if (result?.error) {
+            alert(result.error) // Simple alert for now, could be better UI
+        }
+    }
+
     return (
-        <form action={saveLog} className="space-y-4 w-full">
+        <form action={handleSubmit} className="space-y-4 w-full">
             <input type="hidden" name="date" value={date} />
 
             {/* Score Display */}
