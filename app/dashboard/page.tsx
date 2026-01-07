@@ -39,7 +39,7 @@ export default async function DashboardPage() {
     const totalLogged = validLogs.length
 
     // 1. % On Track
-    const greenDays = validLogs.filter(l => l.daily_score >= 2).length
+    const greenDays = validLogs.filter(l => (l.daily_score ?? 0) >= 2).length
     const onTrackPercentage = totalLogged > 0 ? Math.round((greenDays / totalLogged) * 100) : 0
 
     // 2. Average Score
