@@ -107,7 +107,7 @@ export default async function DashboardPage() {
                 />
             </div>
 
-            <div className="flex-1 w-full flex items-start justify-center overflow-visible pb-1">
+            <div className="flex-1 w-full flex items-start justify-center overflow-y-auto overflow-x-hidden pb-4">
                 <DashboardGrid startDate={profile.start_date} logs={logs || []} />
             </div>
         </div>
