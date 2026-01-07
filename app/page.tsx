@@ -2,6 +2,8 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 
+export const runtime = 'edge'
+
 export default async function Home() {
   try {
     const supabase = await createClient()
