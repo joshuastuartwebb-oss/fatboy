@@ -59,28 +59,28 @@ export default async function DashboardPage() {
     // Let's do strict date continuity check for streaks
     if (validLogs.length > 0) {
         let lastDate = new Date(validLogs[0].date)
-        if (validLogs[0].daily_score >= 2) currentStreak = 1
+        if ((validLogs[0].daily_score ?? 0) >= 2) currentStreak = 1
         bestStreak = currentStreak
 
         for (let i = 1; i < validLogs.length; i++) {
-            const log = validLogs[i]
-            const dietDate = new Date(log.date)
-            const diffTime = Math.abs(dietDate.getTime() - lastDate.getTime())
+            const logDate = new Date(validLogs[i].date)
+            const diffTime = Math.abs(lastDate.getTime() - logDate.getTime())
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-            if (log.daily_score >= 2) {
+            if ((validLogs[i].daily_score ?? 0) >= 2) {
                 if (diffDays === 1) {
                     currentStreak++
                 } else {
-                    currentStreak = 1 // Gap in dates or start of new run
+                    if (currentStreak > bestStreak) bestStreak = currentStreak
+                    currentStreak = 1
                 }
             } else {
+                if (currentStreak > bestStreak) bestStreak = currentStreak
                 currentStreak = 0
             }
-
-            if (currentStreak > bestStreak) bestStreak = currentStreak
-            lastDate = dietDate
+            lastDate = logDate
         }
+        if (currentStreak > bestStreak) bestStreak = currentStreak
     }
 
     return (
