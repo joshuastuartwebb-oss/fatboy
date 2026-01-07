@@ -1,66 +1,84 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
+import Image from 'next/image'
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+export default async function Home() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // If user is logged in, check if they have a profile (start date set)
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single()
+
+  // If no profile or no start date, we need to onboard
+  if (!profile || !profile.start_date) {
+    return (
+      <div className="h-[100dvh] bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+        {/* Background ambient glows */}
+        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--fatboy-green)] opacity-10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[var(--fatboy-yellow)] opacity-5 blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="w-full max-w-md bg-[var(--fatboy-glass)] backdrop-blur-xl border border-[var(--fatboy-glass-border)] rounded-3xl p-8 shadow-2xl relative z-10">
+          <div className="text-center mb-8">
+            <Image src="/fatboy-logo.jpg" alt="Fatboy" width={80} height={80} className="rounded-full mx-auto mb-4" />
+            <h1 className="text-3xl font-black tracking-tight mb-2 text-white">
+              Welcome to FATBOY
+            </h1>
+            <p className="text-neutral-400 text-sm">
+              Begin your 12-week habit tracking journey.
+            </p>
+          </div>
+
+          <form action={async (formData: FormData) => {
+            'use server'
+            const supabase = await createClient()
+            const { data: { user } } = await supabase.auth.getUser()
+            if (!user) return
+
+            const date = formData.get('startDate') as string
+            if (!date) return
+
+            // Create or update profile
+            const { error } = await supabase.from('profiles').upsert({
+              id: user.id,
+              email: user.email,
+              start_date: new Date(date).toISOString(),
+            })
+
+            if (!error) {
+              redirect('/')
+            }
+          }} className="space-y-6">
+            <div>
+              <label className="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 ml-1">Start Date</label>
+              <input
+                type="date"
+                name="startDate"
+                defaultValue={new Date().toISOString().split('T')[0]}
+                required
+                className="w-full bg-neutral-900/50 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--fatboy-green)] focus:border-transparent transition-all"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-[var(--fatboy-green)] hover:bg-[#2ed62b] text-black font-bold py-3.5 rounded-xl transition-all transform active:scale-95 shadow-[0_0_20px_rgba(55,235,52,0.2)] hover:shadow-[0_0_30px_rgba(55,235,52,0.4)]"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              Start My Journey
+            </button>
+          </form>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+      </div>
+    )
+  }
+
+  // Redirect to dashboard
+  redirect('/dashboard')
 }
+
