@@ -33,7 +33,7 @@ export default function StatsOverview({ onTrackPercentage, bestStreak, averageSc
     ]
 
     return (
-        <div className="grid grid-cols-3 gap-1 sm:gap-4 w-full max-w-lg mx-auto mb-1 sm:mb-8">
+        <div className="grid grid-cols-3 gap-1 sm:gap-4 w-full max-w-lg mx-auto mb-3 sm:mb-8">
             {stats.map((stat, i) => (
                 <motion.div
                     key={stat.label}
