@@ -4,6 +4,8 @@ import { format } from 'date-fns'
 import LogForm from './LogForm'
 import BackButton from './BackButton'
 
+export const dynamic = 'force-dynamic'
+
 export default async function LogPage({ params }: { params: Promise<{ date: string }> }) {
     const { date } = await params
     const dateStr = date
