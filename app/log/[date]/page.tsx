@@ -1,10 +1,8 @@
-import { saveLog } from './actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import { format } from 'date-fns'
 import LogForm from './LogForm'
-import { ChevronLeft } from 'lucide-react'
+import BackButton from './BackButton'
 
 export default async function LogPage({ params }: { params: Promise<{ date: string }> }) {
     const { date } = await params
@@ -31,13 +29,7 @@ export default async function LogPage({ params }: { params: Promise<{ date: stri
             <div className="w-full max-w-md flex-1 flex flex-col p-4 relative z-10">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4 shrink-0">
-                    <Link
-                        href="/dashboard"
-                        className="flex items-center gap-1 text-neutral-500 hover:text-white transition-colors text-sm font-medium"
-                    >
-                        <ChevronLeft size={18} />
-                        <span>Back</span>
-                    </Link>
+                    <BackButton />
                     <h1 className="text-lg font-bold bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
                         {format(new Date(dateStr), 'EEEE, MMM d')}
                     </h1>

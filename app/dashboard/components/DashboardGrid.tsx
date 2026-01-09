@@ -104,6 +104,7 @@ export default function DashboardGrid({ startDate, logs }: { startDate: string, 
                                 <Link
                                     key={day.isoDate}
                                     href={day.isFuture ? '#' : `/log/${day.isoDate}`}
+                                    prefetch={!day.isFuture}
                                     className={clsx(
                                         "aspect-square relative flex items-center justify-center rounded-full transition-all duration-200",
                                         day.isFuture ? "cursor-default" : "hover:scale-110 cursor-pointer active:scale-95"
